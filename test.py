@@ -10,7 +10,7 @@ import pandas as pd
 #df.to_csv("test.csv")
 df = pd.read_csv("test.csv")
 
-m = folium.Map(location=[30, 145], zoom_start=4)
+m = folium.Map(location=[30, 145], zoom_start=4, tiles='cartodbpositron')
 
 for idx, row in df.iterrows():
     folium.Marker([row["lat"], row["lon"]], popup=row["time"]).add_to(m)
