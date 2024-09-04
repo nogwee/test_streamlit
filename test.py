@@ -20,7 +20,8 @@ map_col, menu_col = placeholder.columns([4, 1])
 df = pd.read_csv("test.csv")
 df = df.dropna(how="all", axis=1).drop(df.columns[0], axis=1)
 
-gdf = gpd.read_file("N02-23_GML/N02-23_RailroadSection.shp")
+# gdf = gpd.read_file("N02-23_GML/N02-23_RailroadSection.shp")
+gdf = gpd.read_file("allcompanies.geojson")
 
 m = folium.Map(
     location=[30, 145], 
