@@ -12,8 +12,8 @@ df = pd.read_csv("test.csv")
 
 m = folium.Map(location=[30, 145], zoom_start=4, tiles='cartodbpositron')
 
-for idx, row in df.iterrows():
-    folium.Marker([row["lat"], row["lon"]], popup=row["time"]).add_to(m)
+# for idx, row in df.iterrows():
+#     folium.Marker([row["lat"], row["lon"]], popup=row["time"]).add_to(m)
 
 folium.PolyLine(
     locations=[(row['lat'], row['lon']) for idx, row in df.iterrows()],
