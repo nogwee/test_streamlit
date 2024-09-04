@@ -21,7 +21,7 @@ df = pd.read_csv("test.csv")
 df = df.dropna(how="all", axis=1).drop(df.columns[0], axis=1)
 
 # gdf = gpd.read_file("N02-23_GML/N02-23_RailroadSection.shp")
-gdf = gpd.read_file("N02-23_RailroadSection.geojson")
+# gdf = gpd.read_file("N02-23_RailroadSection.geojson")
 
 m = folium.Map(
     location=[30, 145], 
@@ -40,7 +40,7 @@ m.add_child(minimap)
 with map_col:
 
     keiro = FeatureGroup(name="経路図")
-    rosen = FeatureGroup(name="鉄道")
+    # rosen = FeatureGroup(name="鉄道")
 
     # if on:
     folium.PolyLine(
@@ -59,10 +59,10 @@ with map_col:
     # for idx, row in df.iterrows():
     #     folium.CircleMarker([row["lat"], row["lon"]], color="black", radius=4, fill_color="black", opacity=0, tooltip=f"{jst:%Y年%m月%d日%H時%M分}").add_to(m)
 
-    tooltip = folium.GeoJsonTooltip(fields=["N02_004", "N02_003"],aliases=["会社:", "路線名:"],)
-    folium.GeoJson(gdf, tooltip=tooltip).add_to(rosen)
+    # tooltip = folium.GeoJsonTooltip(fields=["N02_004", "N02_003"],aliases=["会社:", "路線名:"],)
+    # folium.GeoJson(gdf, tooltip=tooltip).add_to(rosen)
 
-    rosen.add_to(m)
+    # rosen.add_to(m)
     keiro.add_to(m)
 
     LayerControl().add_to(m)
