@@ -70,4 +70,4 @@ with map_col:
     st_folium(m, use_container_width=True, height=720, returned_objects=[])
 
     df
-    gdf
+    # gdf
