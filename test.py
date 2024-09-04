@@ -3,10 +3,14 @@ import streamlit as st
 from streamlit_folium import st_folium
 import folium
 import pandas as pd
+from folium import FeatureGroup, LayerControl
 
 st.set_page_config( 
     layout="wide"
 )
+
+placeholder = st.empty()
+map_col, menu_col = placeholder.columns([4, 1])
 
 #basin = tracks.TrackDataset(basin="west_pacific", source="ibtracs")
 #storm = basin.get_storm(("jebi", 2018))
@@ -15,26 +19,45 @@ st.set_page_config(
 df = pd.read_csv("test.csv")
 df = df.dropna(how="all", axis=1).drop(df.columns[0], axis=1)
 
-m = folium.Map(location=[30, 145], zoom_start=4, tiles='cartodbpositron')
+
+m = folium.Map(
+    location=[30, 145], 
+    zoom_start=4, 
+    tiles='cartodbpositron'
+)
+
 minimap = folium.plugins.MiniMap(tile_layer='cartodbpositron',toggle_display=True)
 m.add_child(minimap)
 
-folium.PolyLine(
-    locations=[(row['lat'], row['lon']) for idx, row in df.iterrows()],
-    color='blue',
-    weight=2.5,
-    opacity=1
-).add_to(m)
+
+# with menu_col:
+#     st.header("メニューとか")
+#     on = st.toggle("経路図")
+
+with map_col:
+
+    keiro = FeatureGroup(name="経路図")
+
+    # if on:
+    folium.PolyLine(
+        locations=[(row['lat'], row['lon']) for idx, row in df.iterrows()],
+        color='blue',
+        weight=2.5,
+        opacity=1
+    ).add_to(keiro)
 
 
-for idx, row in df.iterrows():
-    jst = pd.to_datetime(row.time).tz_localize("utc").tz_convert("Asia/Tokyo")
-    folium.Circle([row["lat"], row["lon"]], radius=20000, tooltip=f"{jst:%Y年%m月%d日%H時%M分}", fill=True).add_to(m)
+    for idx, row in df.iterrows():
+        jst = pd.to_datetime(row.time).tz_localize("utc").tz_convert("Asia/Tokyo")
+        folium.Circle([row["lat"], row["lon"]], radius=20000, tooltip=f"{jst:%Y年%m月%d日%H時%M分}", fill=True
+        ).add_to(keiro)
 
-# for idx, row in df.iterrows():
-#     folium.CircleMarker([row["lat"], row["lon"]], color="black", radius=4, fill_color="black", opacity=0, tooltip=f"{jst:%Y年%m月%d日%H時%M分}").add_to(m)
+    # for idx, row in df.iterrows():
+    #     folium.CircleMarker([row["lat"], row["lon"]], color="black", radius=4, fill_color="black", opacity=0, tooltip=f"{jst:%Y年%m月%d日%H時%M分}").add_to(m)
 
+    keiro.add_to(m)
+    LayerControl().add_to(m)
 
-st_folium(m, use_container_width=True, height=720, returned_objects=[])
+    st_folium(m, use_container_width=True, height=720, returned_objects=[])
 
-df
+    df
